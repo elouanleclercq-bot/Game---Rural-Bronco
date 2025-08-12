@@ -203,16 +203,10 @@ function renderMap(){
     for(let j=0;j<mapInfo.w;j++){
       const cell = document.createElement("div");
       cell.className = "cell";
-      if(j === state.x && i === state.y) {
-        cell.classList.add("player");
-        const img = document.createElement("img");
-        img.src = "images/Protagonist.png"; // must be in same folder or adjust path
-        img.alt = "Player";
-        img.style.width = "100%";
-        img.style.height = "100%";
-        img.style.objectFit = "contain";
-        cell.appendChild(img);
-      }
+   if(j === state.x && i === state.y) {
+  cell.classList.add("player");
+  cell.textContent = "🧍"; // placeholder until you have a sprite
+}
       mapEl.appendChild(cell);
     }
   }
