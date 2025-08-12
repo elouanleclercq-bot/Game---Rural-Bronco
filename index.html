@@ -17,7 +17,7 @@
   .map-wrap { background:var(--panel); border-radius:8px; padding:10px; display:flex; gap:10px; align-items:flex-start; }
   .map { width:320px; height:320px; background:linear-gradient(180deg,#182233,#0f1a2b); border-radius:6px; padding:6px; display:grid; grid-template-columns: repeat(10,1fr); grid-auto-rows: 32px; gap:2px; }
   .cell { background:var(--tile); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#b9c5d8; }
-  .cell.player{background:linear-gradient(180deg,var(--player),#ff8b4d); box-shadow:0 0 8px rgba(255,136,77,0.25);}
+  .cell.player {background: none; box-shadow: none;}
   .cell.enemy{background:linear-gradient(180deg,var(--enemy),#ff8b6b); box-shadow:0 0 8px rgba(255,107,107,0.25);}
   .hud { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
   .card { background:rgba(0,0,0,0.25); padding:8px 10px; border-radius:8px; min-width:120px; }
@@ -197,14 +197,22 @@ function log(...txt){
 
 function renderMap(){
   const mapInfo = maps[state.location];
-  mapEl.style.gridTemplateColumns = repeat(${mapInfo.w},1fr);
+  mapEl.style.gridTemplateColumns = `repeat(${mapInfo.w}, 1fr)`;
   mapEl.innerHTML = "";
   for(let i=0;i<mapInfo.h;i++){
     for(let j=0;j<mapInfo.w;j++){
       const cell = document.createElement("div");
-      cell.className="cell";
-      if(j===state.x && i===state.y) cell.classList.add("player");
-      // simple enemy marker (if a rare enemy placed)
+      cell.className = "cell";
+      if(j === state.x && i === state.y) {
+        cell.classList.add("player");
+        const img = document.createElement("img");
+        img.src = "images/Protagonist.png"; // must be in same folder or adjust path
+        img.alt = "Player";
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "contain";
+        cell.appendChild(img);
+      }
       mapEl.appendChild(cell);
     }
   }
@@ -217,7 +225,7 @@ function renderMap(){
   stepsEl.textContent = state.steps;
   levelEl.textContent = state.level;
   xpEl.textContent = state.xp;
-  invEl.innerHTML = state.inventory.map(i=><div class="card small">${i}</div>).join("");
+  invEl.innerHTML = state.inventory.map(i => `<div class="card small">${i}</div>`).join("");
 }
 
 /* --- Movement & encounters --- */
